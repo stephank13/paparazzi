@@ -65,6 +65,10 @@ void ahrs_ice_init(void)
   ahrs_ice.status = AHRS_ICE_UNINIT;
   ahrs_ice.is_aligned = FALSE;
 
+#if defined(PPRZ_TRIG_INT_COMPR_FLASH)
+  pprz_trig_int_init();
+#endif
+
   /* init ltp_to_imu to zero */
   INT_EULERS_ZERO(ahrs_ice.ltp_to_imu_euler)
   INT_RATES_ZERO(ahrs_ice.imu_rate);

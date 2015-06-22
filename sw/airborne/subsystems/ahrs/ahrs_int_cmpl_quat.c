@@ -114,6 +114,10 @@ void ahrs_icq_init(void)
   ahrs_icq.ltp_vel_norm_valid = FALSE;
   ahrs_icq.heading_aligned = FALSE;
 
+#if defined(PPRZ_TRIG_INT_COMPR_FLASH)
+  pprz_trig_int_init();
+#endif
+
   /* init ltp_to_imu quaternion as zero/identity rotation */
   int32_quat_identity(&ahrs_icq.ltp_to_imu_quat);
 
