@@ -246,8 +246,8 @@ void ahrs_fc_register(void)
   AbiBindMsgGPS(ABI_BROADCAST, &gps_ev, gps_cb);
 
 #if PERIODIC_TELEMETRY
-  register_periodic_telemetry(DefaultPeriodic, "AHRS_EULER_INT", send_att);
-  register_periodic_telemetry(DefaultPeriodic, "GEO_MAG", send_geo_mag);
-  register_periodic_telemetry(DefaultPeriodic, "STATE_FILTER_STATUS", send_filter_status);
+  register_periodic_telemetry(DefaultPeriodic, MESG_AHRS_EULER_INT, send_att);
+  register_periodic_telemetry(DefaultPeriodic, MESG_GEO_MAG, send_geo_mag);
+  register_periodic_telemetry(DefaultPeriodic, MESG_STATE_FILTER_STATUS, send_filter_status);
 #endif
 }

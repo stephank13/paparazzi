@@ -49,8 +49,7 @@ typedef const char telemetry_msg[64];
  */
 struct periodic_telemetry {
   uint8_t nb;           ///< number of messages
-  telemetry_msg *msgs;  ///< the array of msg names
-  telemetry_cb *cbs;    ///< array of associated callbacks
+  telemetry_cb *cbs;    ///< array of callbacks defined through MESG_
 };
 
 /** Register a telemetry callback function.
@@ -61,10 +60,10 @@ struct periodic_telemetry {
  * @return TRUE if message registered with success, FALSE otherwise
  */
 #if PERIODIC_TELEMETRY
-extern bool_t register_periodic_telemetry(struct periodic_telemetry *_pt, const char *_msg, telemetry_cb _cb);
+extern bool_t register_periodic_telemetry(struct periodic_telemetry *_pt, uint8_t _msgn, telemetry_cb _cb);
 #else
 static inline bool_t register_periodic_telemetry(struct periodic_telemetry *_pt __attribute__((unused)),
-    const char *_msg __attribute__((unused)), telemetry_cb _cb __attribute__((unused))) { return FALSE; }
+    uint8_t _msgn __attribute__((unused)), telemetry_cb _cb __attribute__((unused))) { return FALSE; }
 #endif
 
 #if USE_PERIODIC_TELEMETRY_REPORT

@@ -32,32 +32,28 @@
 
 /* Implement global structures from generated header
  */
-telemetry_msg telemetry_msgs[TELEMETRY_NB_MSG] = TELEMETRY_MSG_NAMES;
 telemetry_cb telemetry_cbs[TELEMETRY_NB_MSG] = TELEMETRY_CBS_NULL;
-struct periodic_telemetry pprz_telemetry = { TELEMETRY_NB_MSG, telemetry_msgs, telemetry_cbs };
+struct periodic_telemetry pprz_telemetry = { TELEMETRY_NB_MSG, telemetry_cbs };
 
 
 /** Register a telemetry callback function.
  * @param _pt periodic telemetry structure to register
- * @param _msg message name (string) as defined in telemetry xml file
+ * @param _msgn message name as defined in telemetry xml file with prepended MESG_
  * @param _cb callback function, called according to telemetry mode and specified period
  * @return TRUE if message registered with success, FALSE otherwise
  */
-bool_t register_periodic_telemetry(struct periodic_telemetry *_pt, const char *_msg, telemetry_cb _cb)
+bool_t register_periodic_telemetry(struct periodic_telemetry *_pt, uint8_t _msgn, telemetry_cb _cb)
 {
   // return FALSE if NULL is passed as periodic_telemetry
   if (_pt == NULL) { return FALSE; }
-  // look for message name
-  uint8_t i;
-  for (i = 0; i < _pt->nb; i++) {
-    if (str_equal(_pt->msgs[i], _msg)) {
-      // register callback if not already done
-      if (_pt->cbs[i] == NULL) {
-        _pt->cbs[i] = _cb;
-        return TRUE;
-      } else { return FALSE; }
-    }
-  }
+  // return FALSE if message number is not existing
+  if (_msgn > _pt->nb) { return FALSE; }
+  if (_msgn == 0) { return FALSE; }
+  // register callback if not already done
+  if (_pt->cbs[_msgn] == NULL) {
+    _pt->cbs[_msgn] = _cb;
+    return TRUE;
+  } else { return FALSE; }
   // message name is not in telemetry file
   return FALSE;
 }
