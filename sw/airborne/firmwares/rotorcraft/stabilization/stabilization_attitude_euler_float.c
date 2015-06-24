@@ -116,8 +116,8 @@ void stabilization_attitude_init(void)
   FLOAT_EULERS_ZERO(stabilization_att_sum_err);
 
 #if PERIODIC_TELEMETRY
-  register_periodic_telemetry(DefaultPeriodic, "STAB_ATTITUDE", send_att);
-  register_periodic_telemetry(DefaultPeriodic, "STAB_ATTITUDE_REF", send_att_ref);
+  register_periodic_telemetry(DefaultPeriodic, MESG_STAB_ATTITUDE, send_att);
+  register_periodic_telemetry(DefaultPeriodic, MESG_STAB_ATTITUDE_REF, send_att_ref);
 #endif
 }
 

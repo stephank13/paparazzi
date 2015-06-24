@@ -199,8 +199,8 @@ void ahrs_mlkf_register(void)
   AbiBindMsgGEO_MAG(ABI_BROADCAST, &geo_mag_ev, geo_mag_cb);
 
 #if PERIODIC_TELEMETRY
-  register_periodic_telemetry(DefaultPeriodic, "GEO_MAG", send_geo_mag);
-  register_periodic_telemetry(DefaultPeriodic, "STATE_FILTER_STATUS", send_filter_status);
+  register_periodic_telemetry(DefaultPeriodic, MESG_GEO_MAG, send_geo_mag);
+  register_periodic_telemetry(DefaultPeriodic, MESG_STATE_FILTER_STATUS, send_filter_status);
 #endif
 }
 

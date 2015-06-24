@@ -273,9 +273,9 @@ void h_ctl_init(void)
 #endif
 
 #if PERIODIC_TELEMETRY
-  register_periodic_telemetry(DefaultPeriodic, "CALIBRATION", send_calibration);
-  register_periodic_telemetry(DefaultPeriodic, "TUNE_ROLL", send_tune_roll);
-  register_periodic_telemetry(DefaultPeriodic, "H_CTL_A", send_ctl_a);
+  register_periodic_telemetry(DefaultPeriodic, MESG_CALIBRATION, send_calibration);
+  register_periodic_telemetry(DefaultPeriodic, MESG_TUNE_ROLL, send_tune_roll);
+  register_periodic_telemetry(DefaultPeriodic, MESG_H_CTL_A, send_ctl_a);
 #endif
 }
 

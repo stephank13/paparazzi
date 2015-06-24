@@ -144,12 +144,19 @@ let print_message_table = fun out_h xml ->
       ) (Xml.children mode)
     ) (Xml.children process)
   ) (Xml.children xml);
+  (* Print MESG number *)
+  let nb = Hashtbl.fold (fun n _ i ->
+    Xml2h.define (sprintf "MESG_%s" n) (sprintf "%d" i);
+    i+1
+  ) messages 0 in
   (* Print ID *)
   let nb = Hashtbl.fold (fun n _ i ->
     Xml2h.define (sprintf "TELEMETRY_MSG_%s_ID" n) (sprintf "%d" i);
     i+1
   ) messages 0 in
   Xml2h.define "TELEMETRY_NB_MSG" (sprintf "%d" nb);
+  (* get unused message types *)
+  fprintf out_h "#include \"messages_nperiod.h\"\n";
   (* Structure initialization *)
   fprintf out_h "#define TELEMETRY_MSG_NAMES { \\\n";
   Hashtbl.iter (fun n _ -> fprintf out_h "  \"%s\", \\\n" n) messages;

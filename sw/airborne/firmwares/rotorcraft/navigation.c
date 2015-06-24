@@ -168,8 +168,8 @@ void nav_init(void)
   dist2_to_wp = 0;
 
 #if PERIODIC_TELEMETRY
-  register_periodic_telemetry(DefaultPeriodic, "ROTORCRAFT_NAV_STATUS", send_nav_status);
-  register_periodic_telemetry(DefaultPeriodic, "WP_MOVED", send_wp_moved);
+  register_periodic_telemetry(DefaultPeriodic, MESG_ROTORCRAFT_NAV_STATUS, send_nav_status);
+  register_periodic_telemetry(DefaultPeriodic, MESG_WP_MOVED, send_wp_moved);
 #endif
 }
 

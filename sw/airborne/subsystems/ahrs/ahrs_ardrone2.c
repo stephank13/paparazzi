@@ -86,7 +86,7 @@ void ahrs_ardrone2_init(void)
   ahrs_ardrone2.is_aligned = TRUE;
 
 #if PERIODIC_TELEMETRY
-  register_periodic_telemetry(DefaultPeriodic, "AHRS_ARDRONE2", send_ahrs_ad2);
+  register_periodic_telemetry(DefaultPeriodic, MESG_AHRS_ARDRONE2, send_ahrs_ad2);
 #endif
 }
 
