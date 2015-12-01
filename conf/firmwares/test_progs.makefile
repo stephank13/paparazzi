@@ -227,6 +227,21 @@ test_telemetry.srcs   += test/test_telemetry.c
 
 
 #
+# test_math_trig_lut: Test math trigonometric look up tables
+#
+# configuration
+#   MODEM_PORT :
+#   MODEM_BAUD :
+#
+test_math_trig_lut.ARCHDIR = $(ARCH)
+test_math_trig_lut.CFLAGS += $(COMMON_TEST_CFLAGS)
+test_math_trig_lut.srcs   += $(COMMON_TEST_SRCS)
+test_math_trig_lut.CFLAGS += $(COMMON_TELEMETRY_CFLAGS)
+test_math_trig_lut.srcs   += $(COMMON_TELEMETRY_SRCS)
+test_math_trig_lut.srcs   += test/test_math_trig_lut.c math/pprz_trig_int.c
+
+
+#
 # test ms2100 mag
 #
 test_ms2100.ARCHDIR = $(ARCH)

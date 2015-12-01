@@ -63,15 +63,15 @@ PRINT_CONFIG_VAR(IMU_MPU60X0_GYRO_RANGE)
 #endif
 PRINT_CONFIG_VAR(IMU_MPU60X0_ACCEL_RANGE)
 
-#ifndef IMU_MPU60X0_I2C_ADDR
+//#ifndef IMU_MPU60X0_I2C_ADDR
 #define IMU_MPU60X0_I2C_ADDR MPU60X0_ADDR
-#endif
+//#endif
 
 struct ImuMpu60x0 imu_mpu_i2c;
 
 void imu_impl_init(void)
 {
-  mpu60x0_i2c_init(&imu_mpu_i2c.mpu, &(IMU_MPU60X0_I2C_DEV), IMU_MPU60X0_I2C_ADDR >> 1);
+  mpu60x0_i2c_init(&imu_mpu_i2c.mpu, &(IMU_MPU60X0_I2C_DEV), IMU_MPU60X0_I2C_ADDR);
   // change the default configuration
   imu_mpu_i2c.mpu.config.smplrt_div = IMU_MPU60X0_SMPLRT_DIV;
   imu_mpu_i2c.mpu.config.dlpf_cfg = IMU_MPU60X0_LOWPASS_FILTER;
@@ -91,8 +91,19 @@ void imu_mpu_i2c_event(void)
   // If the MPU60X0 I2C transaction has succeeded: convert the data
   mpu60x0_i2c_event(&imu_mpu_i2c.mpu);
   if (imu_mpu_i2c.mpu.data_available) {
+#if defined BOARD_CJMCU || defined BOARD_NAZE32
+    RATES_ASSIGN(imu.gyro_unscaled,
+                 imu_mpu_i2c.mpu.data_rates.rates.p,
+                 -imu_mpu_i2c.mpu.data_rates.rates.q,
+                 -imu_mpu_i2c.mpu.data_rates.rates.r);
+    VECT3_ASSIGN(imu.accel_unscaled,
+                 imu_mpu_i2c.mpu.data_accel.vect.x,
+                 -imu_mpu_i2c.mpu.data_accel.vect.y,
+                 -imu_mpu_i2c.mpu.data_accel.vect.z);
+#else
     RATES_COPY(imu.gyro_unscaled, imu_mpu_i2c.mpu.data_rates.rates);
     VECT3_COPY(imu.accel_unscaled, imu_mpu_i2c.mpu.data_accel.vect);
+#endif
     imu_mpu_i2c.mpu.data_available = FALSE;
     imu_scale_gyro(&imu);
     imu_scale_accel(&imu);

@@ -16,10 +16,12 @@ IMU_MPU60X0_SRCS   += peripherals/mpu60x0_i2c.c
 
 
 # set default i2c bus
+ifndef IMU_MPU60X0_I2C_DEV
 ifeq ($(ARCH), lpc21)
 IMU_MPU60X0_I2C_DEV ?= i2c0
 else ifeq ($(ARCH), stm32)
 IMU_MPU60X0_I2C_DEV ?= i2c2
+endif
 endif
 
 ifeq ($(TARGET), ap)
