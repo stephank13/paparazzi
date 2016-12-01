@@ -1,0 +1,17 @@
+<!DOCTYPE module SYSTEM "module.dtd">
+
+<module name="wind_estimator" dir="meteo">
+  <doc>
+    <description>Bla</description>
+  </doc>
+  <header>
+    <file name="wind_estimator.h"/>
+  </header>
+  <init fun="wind_est_init()"/>
+  <periodic fun="wind_est_periodic()" freq="20" start="wind_est_start()"
+	stop="wind_est_stop()" autorun="FALSE" />
+  <makefile target="ap|nps">
+    <file name="wind_estimator.c"/>
+  </makefile>
+</module>
+
