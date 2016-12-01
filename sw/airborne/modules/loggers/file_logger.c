@@ -29,7 +29,9 @@
 #include <stdio.h>
 #include "std.h"
 
+#include "mcu_periph/sys_time.h"
 #include "subsystems/imu.h"
+#include "subsystems/gps.h"
 #include "firmwares/rotorcraft/stabilization.h"
 #include "state.h"
 
@@ -61,7 +63,7 @@ void file_logger_start(void)
   if (file_logger != NULL) {
     fprintf(
       file_logger,
-      "counter,gyro_unscaled_p,gyro_unscaled_q,gyro_unscaled_r,accel_unscaled_x,accel_unscaled_y,accel_unscaled_z,mag_unscaled_x,mag_unscaled_y,mag_unscaled_z,COMMAND_THRUST,COMMAND_ROLL,COMMAND_PITCH,COMMAND_YAW,qi,qx,qy,qz\n"
+      "counter,gps_tow,gyro_unscaled_p,gyro_unscaled_q,gyro_unscaled_r,accel_unscaled_x,accel_unscaled_y,accel_unscaled_z,mag_unscaled_x,mag_unscaled_y,mag_unscaled_z,COMMAND_THRUST,COMMAND_ROLL,COMMAND_PITCH,COMMAND_YAW,qi,qx,qy,qz\n"
     );
   }
 }
@@ -84,8 +86,12 @@ void file_logger_periodic(void)
   static uint32_t counter;
   struct Int32Quat *quat = stateGetNedToBodyQuat_i();
 
-  fprintf(file_logger, "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+  fprintf(file_logger, "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
           counter,
+          gps_tow_from_sys_ticks(sys_time.nb_tick),
+//          sys_time.nb_sec,
+//          sys_time.nb_sec_rem,
+//          sys_time.nb_tick,
           imu.gyro_unscaled.p,
           imu.gyro_unscaled.q,
           imu.gyro_unscaled.r,
