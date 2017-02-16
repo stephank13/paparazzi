@@ -29,6 +29,12 @@
 #include "peripherals/ms5611.h"
 #include "std.h"
 
+#ifdef SENSOR_SYNC_SEND
+#include "mcu_periph/uart.h"
+#include "pprzlink/messages.h"
+#include "subsystems/datalink/downlink.h"
+#endif
+
 /**
  * Check if CRC of PROM data is OK.
  * @return TRUE if OK, FALSE otherwise
@@ -154,6 +160,16 @@ bool ms5607_calc(struct Ms5611Data *ms)
     /* temperature in deg Celsius with 0.01 degC resolultion */
     ms->temperature = (int32_t)tempms;
     ms->pressure = p;
+    
+#ifdef SENSOR_SYNC_SEND
+    float fbaroms, ftemp;
+    fbaroms = p / 100.0;
+    ftemp = tempms / 100.0;
+    DOWNLINK_SEND_BARO_MS5611(DefaultChannel, DefaultDevice,
+                              &ms->d1, & ms->d2,
+                              &fbaroms, &ftemp);
+#endif
+
     return true;
   }
   return false;

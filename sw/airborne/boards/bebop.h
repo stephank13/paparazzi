@@ -34,6 +34,7 @@
 #define GPS_UBX_ENABLE_NMEA_DATA_MASK 0xff
 /** FTDI cable for stereoboard or external GPS */
 #define UART2_DEV /dev/ttyUSB0
+#define UART3_DEV /dev/ttyUSB1
 
 /* Default actuators driver */
 #define DEFAULT_ACTUATORS "boards/bebop/actuators.h"
