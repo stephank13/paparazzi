@@ -104,11 +104,12 @@ void mpu60x0_i2c_event(struct Mpu60x0_I2c *mpu)
         int16_t temp_raw = Int16FromBuf(mpu->i2c_trans.buf, 7);
         mpu->temp = (float)temp_raw / 340.0f + 36.53f;
 
-#ifdef SENSOR_SYNC_SEND
+#ifdef SENSOR_SYNC_SEND_
     float ftemp;
     uint16_t temp;
     ftemp = mpu->temp;
-    DOWNLINK_SEND_TMP_STATUS(DefaultChannel, DefaultDevice, &temp, &ftemp);
+    /* FIXME: use frequency from define */
+    RunOnceEvery(512, DOWNLINK_SEND_TMP_STATUS(DefaultChannel, DefaultDevice, &temp, &ftemp));
 #endif
 
         // if we are reading slaves through the mpu, copy the ext_sens_data

@@ -1,0 +1,18 @@
+<!DOCTYPE module SYSTEM "module.dtd">
+
+<module name="ins_temp_ctrl" dir="ins">
+  <doc>
+    <description>
+      Bebop2 INS sensor temperature control.
+    </description>
+  </doc>
+  <header>
+    <file name="ins_temp_ctrl.h"/>
+  </header>
+  <init fun="ins_temp_ctrl_init()"/>
+  <periodic fun="ins_temp_ctrl_periodic()" freq="200."/>
+  <makefile target="ap">
+    <file name="ins_temp_ctrl.c"/>
+  </makefile>
+</module>
+

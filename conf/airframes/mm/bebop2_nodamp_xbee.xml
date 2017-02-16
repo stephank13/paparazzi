@@ -47,6 +47,7 @@
     <module name="humid_sht_uart">
       <configure name="SHT_UART" value="UART5"/>
     </module>
+    <module name="ins_temp_ctrl"/>
   </modules>
 
   <commands>

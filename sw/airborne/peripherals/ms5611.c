@@ -29,7 +29,7 @@
 #include "peripherals/ms5611.h"
 #include "std.h"
 
-#ifdef SENSOR_SYNC_SEND
+#ifdef SENSOR_SYNC_SEND_
 #include "mcu_periph/uart.h"
 #include "pprzlink/messages.h"
 #include "subsystems/datalink/downlink.h"
@@ -161,7 +161,7 @@ bool ms5607_calc(struct Ms5611Data *ms)
     ms->temperature = (int32_t)tempms;
     ms->pressure = p;
     
-#ifdef SENSOR_SYNC_SEND
+#ifdef SENSOR_SYNC_SEND_
     float fbaroms, ftemp;
     fbaroms = p / 100.0;
     ftemp = tempms / 100.0;
