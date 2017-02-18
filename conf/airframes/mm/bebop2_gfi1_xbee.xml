@@ -20,14 +20,12 @@
       <configure name="MODEM_BAUD" value="B57600"/>
     </module>
     
-    <!--module name="telemetry" type="transparent_udp"/-->
-
     <module name="radio_control" type="datalink"/>
     <module name="motor_mixing"/>
     <module name="actuators" type="bebop"/>
     <module name="imu" type="bebop"/>
     <module name="gps" type="ublox"/>
-    <module name="stabilization" type="indi"/>
+    <module name="stabilization" type="indi_simple"/>
     <module name="ahrs" type="int_cmpl_quat">
       <configure name="USE_MAGNETOMETER" value="TRUE"/>
       <define name="AHRS_USE_GPS_HEADING" value="FALSE"/>
@@ -133,6 +131,11 @@
     <define name="H_Z" value="0.970687"/>
   </section>
 
+  <section name="INS" prefix="INS_">
+    <define name="SONAR_MAX_RANGE" value="2.2"/>
+    <define name="SONAR_UPDATE_ON_AGL" value="TRUE"/>
+  </section>
+
 
   <section name="RC_SETPOINT" prefix="STABILIZATION_ATTITUDE_">
     <!-- setpoint limits for attitude stabilization rc flight -->
@@ -164,10 +167,10 @@
 
   <section name="STABILIZATION_ATTITUDE_INDI" prefix="STABILIZATION_INDI_">
     <!-- control effectiveness -->
-    <define name="G1_P" value="0.05"/>
-    <define name="G1_Q" value="0.04"/>
-    <define name="G1_R" value="0.0022"/>
-    <define name="G2_R" value="0.20"/>
+    <define name="G1_P" value="0.062"/>
+    <define name="G1_Q" value="0.0427"/>
+    <define name="G1_R" value="0.0029"/>
+    <define name="G2_R" value="0.30"/>
 
     <!-- Here it is assumed that your removed the damping from your bebop2!
          The dampers do not really damp, but cause oscillation. By removing/
@@ -185,15 +188,9 @@
     <define name="REF_RATE_R" value="28.0"/>
 
     <!-- second order filter parameters -->
-    <define name="FILT_OMEGA" value="20.0"/>
-    <define name="FILT_ZETA" value="0.7"/>
-    <define name="FILT_OMEGA_R" value="20.0"/>
-    <define name="FILT_ZETA_R" value="0.7"/>
-
-    <!-- second order filter parameters -->
     <define name="FILT_CUTOFF" value="3.2"/>
     <define name="FILT_CUTOFF_R" value="3.2"/>
-    
+
     <!-- first order actuator dynamics -->
     <define name="ACT_DYN_P" value="0.06"/>
     <define name="ACT_DYN_Q" value="0.06"/>
