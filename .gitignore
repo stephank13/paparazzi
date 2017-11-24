@@ -56,8 +56,9 @@ paparazzi.sublime-workspace
 /paparazzi
 
 # /conf/
-/conf/conf.xml
+# /conf/conf.xml
 /conf/conf.xml.20*
+# /conf/conf.xml.bak*
 /conf/conf_personal.xml.20*
 /conf/control_panel.xml
 /conf/control_panel.xml.20*
