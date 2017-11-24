@@ -1,4 +1,4 @@
-'<control_panel name="paparazzi control panel">
+<control_panel name="paparazzi control panel">
   <section name="variables">
     <variable name="downlink_serial_port" value="/dev/ttyUSB0"/>
     <variable name="fbw_serial_port" value="/dev/ttyS1"/>
