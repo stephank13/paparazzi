@@ -192,3 +192,4 @@ tests/results/*
 
 # K-develop
 *.kate-swp
+conf/control_panel.xml.save
