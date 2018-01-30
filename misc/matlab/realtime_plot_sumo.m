@@ -1,16 +1,15 @@
 % script to plot real-time profiles from sumo data
 
-% instructions (example)
-% 
+% Before using this scrip you have to setup the connection... 
 % 1. open port on listening machine (where you want to plot data), e.g.:
-% nc -v -l -p 1234 > ~/Desktop/realtime_sumo.data
-% 
-% 2. conncet GCS (e.g via ethernet) to listening machine and stream data: 
+%  nc -v -l -p 1234 > ~/Desktop/realtime_sumo.data
+% 2. conncet GCS (e.g via ethernet) to listening machine and stream data:
 % tail --lines=100 -f ~/paparazzi/var/logs/18_02_05__00_00_00.data | pv -b | nc -v 10.42.43.1 1234
-% 
 % 3. run realtime_plot_sumo.m in matlab (cancel when you want to start a new plot or done)
-
-
+% Troubleshooting:
+% - you might have to change nc to netcat depending on which you have installed
+% - works also via wifi - just check the ip (ifconfig) on the listening machine
+% - if the incoming connection is blocked by the firewall add a new rule: sudo ufw allow in 1234/tcp
 
 
 file = '~/Desktop/realtime_sumo.data';
