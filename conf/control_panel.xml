@@ -91,6 +91,48 @@
       </program>
       <program name="Messages"/>
     </session>
+    <session name="Flight bebop2_gfi3_wifi">
+      <program name="Server"/>
+      <program name="GCS">
+        <arg flag="-layout" constant="horizontal_data.xml"/>
+      </program>
+      <program name="Data Link">
+        <arg flag="-udp"/>
+      </program>
+      <program name="Joystick">
+        <arg flag="-ac" constant="bebop2_gfi3"/>
+        <arg flag="logitech_f310_mode2.xml"/>
+      </program>
+      <program name="Messages"/>
+    </session>
+    <session name="Flight bebop2_gfi4_wifi">
+      <program name="Server"/>
+      <program name="GCS">
+        <arg flag="-layout" constant="horizontal_data.xml"/>
+      </program>
+      <program name="Data Link">
+        <arg flag="-udp"/>
+      </program>
+      <program name="Joystick">
+        <arg flag="-ac" constant="bebop2_gfi4"/>
+        <arg flag="logitech_f310_mode2.xml"/>
+      </program>
+      <program name="Messages"/>
+    </session>
+    <session name="Flight bebop2_gfi5_wifi">
+      <program name="Server"/>
+      <program name="GCS">
+        <arg flag="-layout" constant="horizontal_data.xml"/>
+      </program>
+      <program name="Data Link">
+        <arg flag="-udp"/>
+      </program>
+      <program name="Joystick">
+        <arg flag="-ac" constant="bebop2_gfi5"/>
+        <arg flag="logitech_f310_mode2.xml"/>
+      </program>
+      <program name="Messages"/>
+    </session>
     <session name="Flight USB-serial@57600">
       <program name="Data Link">
         <arg flag="-d" constant="/dev/ttyUSB0"/>
