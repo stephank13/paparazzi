@@ -15,19 +15,20 @@
     <waypoint height="1900.0" name="_MAX_ALT" x="-10" y="10"/>
     <waypoint alt="40.0" name="pdown" x="-54.0" y="179.5"/>
     <waypoint alt="1800.0" name="pup" x="-53.6" y="210.9"/>
-    <waypoint lat="65.0392" lon="24.5545" name="Lidar"/>
-    <waypoint lat="65.0387" lon="24.5522" name="Sodar"/>
-    <waypoint lat="65.0385" lon="24.5543" name="Flux2"/>
+    <waypoint lat="65.037893" lon="24.558011" name="FMI_Sodar"/>
+    <waypoint lat="65.039653" lon="24.5552350" name="MFAS_Sodar"/>
+    <waypoint lat="65.0359710" lon="24.5556280" name="Flux2"/>
+    <waypoint lat="65.036463" lon="24.55480" name="Flux1"/>
     <waypoint name="HOME" x="148.2" y="-141.0"/>
     <waypoint alt="100.0" name="1" x="-309.3" y="-589.1"/>
     <waypoint alt="100.0" name="2" x="-153.9" y="-41.4"/>
     <waypoint name="S1" x="420.5" y="300.4"/>
     <waypoint name="S1a" x="540.5" y="300.4"/>
     <waypoint name="S1b" x="420.5" y="200.4"/>
-    <waypoint name="S2" x="-1031.7" y="1670.4"/>
+    <waypoint name="S2" x="-27.3" y="620.9"/>
     <waypoint name="MOB" x="321.5" y="-16.3"/>
-    <waypoint alt="100.0" name="STBY" x="203.8" y="-179.5"/>
-    <waypoint alt="100.0" name="CIR" x="39.5" y="262.5"/>
+    <waypoint alt="100.0" name="C_ICE" x="203.8" y="-179.5"/>
+    <waypoint alt="100.0" name="C_HARBOR" x="39.5" y="262.5"/>
     <waypoint alt="100.0" name="START" x="204.2" y="-367.6"/>
     <waypoint name="_BASELEG" x="61.7" y="-337.5"/>
     <waypoint alt="50.0" name="AF" x="307.1" y="-499.1"/>
@@ -35,71 +36,53 @@
     <waypoint name="P1" x="65.2" y="323.7"/>
   </waypoints>
   <exceptions>
-    <exception cond="estimator_z > WaypointAlt(WP__MAX_ALT)" deroute="stand_by"/>
-    <exception cond="datalink_time > 140" deroute="stand_by"/>
-    <exception cond="10.0 > PowerVoltage()" deroute="stand_by"/>
+    <exception cond="estimator_z > WaypointAlt(WP__MAX_ALT)" deroute="circle_ice"/>
+    <exception cond="datalink_time > 140" deroute="circle_ice"/>
+    <exception cond="10.0 > PowerVoltage()" deroute="circle_ice"/>
   </exceptions>
   <blocks>
     <block name="start">
       <attitude pitch="20" roll="0" throttle="0.99" until="(estimator_flight_time > 3)" vmode="throttle"/>
       <go wp="START"/>
     </block>
-    <block name="stand_by" strip_button="stand_by">
-      <circle radius="nav_radius" wp="STBY"/>
+    <block name="circle_ice" strip_button="c_ice">
+      <circle radius="nav_radius" wp="C_ICE"/>
     </block>
-    <block name="circle" strip_button="circle">
-      <circle radius="nav_radius" wp="CIR"/>
+    <block name="circle_harbor" strip_button="c_harbor">
+      <circle radius="nav_radius" wp="C_HARBOR"/>
     </block>
-    <block name="go_prof_lowwind">
+    <block name="go_prof" strip_button="go profile low wind" strip_icon="up_profile.png">
       <set value="100+ground_alt" var="waypoints[WP_P1].a"/>
       <circle radius="nav_radius" until="NavCircleCount() > 1" wp="P1"/>
-      <deroute block="prof_lowwind_down"/>
+      <deroute block="prof_down_start"/>
     </block>
-    <block name="prof_lowwind_down">
+    <block name="prof_down_start">
       <set value="WaypointAlt(WP_pdown)" var="waypoints[WP_P1].a"/>
       <circle radius="nav_radius" until="stage_time > 0.1" wp="P1"/>
-      <circle climb="-2" radius="nav_radius" until="5 > (GetPosAlt() - WaypointAlt(WP_P1))" vmode="climb" wp="P1"/>
+      <circle pitch="-5" radius="nav_radius" throttle="0.0" until="5 > (GetPosAlt() - WaypointAlt(WP_P1))" vmode="throttle" wp="P1"/>
       <circle radius="nav_radius" until="NavCircleCount() > 1" wp="P1"/>
+      <deroute block="prof_up"/>
     </block>
-    <block name="prof_lowwind_up">
+    <block name="prof_up">
       <set value="WaypointAlt(WP_pup)" var="waypoints[WP_P1].a"/>
       <circle radius="nav_radius" until="stage_time > 0.1" wp="P1"/>
-      <circle climb="2" radius="nav_radius" until="(GetPosAlt() - WaypointAlt(WP_P1)) > -5" vmode="climb" wp="P1"/>
+      <circle pitch="7.5" radius="nav_radius" throttle="0.95" until="(GetPosAlt() - WaypointAlt(WP_P1)) > -5" vmode="throttle" wp="P1"/>
       <circle radius="nav_radius" until="NavCircleCount() > 1" wp="P1"/>
-      <deroute block="prof_lowwind_down"/>
+      <deroute block="prof_down_l"/>
     </block>
-    <block name="go_prof_highwind">
-      <set value="100+ground_alt" var="waypoints[WP_P1].a"/>
-      <circle radius="nav_radius" until="NavCircleCount() > 1" wp="P1"/>
-      <deroute block="prof_highwind"/>
-    </block>
-    <block name="prof_highwind">
+    <block name="prof_down_l" strip_button="profile down low wind" strip_icon="down_profile_l.png" group="prof_down">
       <set value="WaypointAlt(WP_pdown)" var="waypoints[WP_P1].a"/>
       <circle radius="nav_radius" until="stage_time > 0.1" wp="P1"/>
-      <circle climb="-4" radius="nav_radius" until="5 > (GetPosAlt() - WaypointAlt(WP_P1))" vmode="climb" wp="P1"/>
+      <circle pitch="-5" radius="nav_radius" throttle="0.0" until="5 > (GetPosAlt() - WaypointAlt(WP_P1))" vmode="throttle" wp="P1"/>
       <circle radius="nav_radius" until="NavCircleCount() > 1" wp="P1"/>
-      <set value="WaypointAlt(WP_pup)" var="waypoints[WP_P1].a"/>
+      <deroute block="circle_harbor"/>
+    </block>
+    <block name="prof_down_h" strip_button="profile down high wind" strip_icon="down_profile_h.png" group="prof_down">
+      <set value="WaypointAlt(WP_pdown)" var="waypoints[WP_P1].a"/>
       <circle radius="nav_radius" until="stage_time > 0.1" wp="P1"/>
-      <circle climb="2" radius="nav_radius" until="(GetPosAlt() - WaypointAlt(WP_P1)) > -5" vmode="climb" wp="P1"/>
+      <circle pitch="-10" radius="nav_radius" throttle="0.0" until="5 > (GetPosAlt() - WaypointAlt(WP_P1))" vmode="throttle" wp="P1"/>
       <circle radius="nav_radius" until="NavCircleCount() > 1" wp="P1"/>
-      <deroute block="prof_highwind"/>
-    </block>
-    <block name="down" strip_button="Down" strip_icon="downdown.png">
-      <set value="LATERAL_MODE_ROLL" var="lateral_mode"/>
-      <set value="V_CTL_MODE_MANUAL" var="v_ctl_mode"/>
-      <set value="TRUE" var="h_ctl_disabled"/>
-      <set value="(-0.6*MAX_PPRZ)" var="h_ctl_aileron_setpoint"/>
-      <set value="(0.9*MAX_PPRZ)" var="h_ctl_elevator_setpoint"/>
-      <while cond="estimator_z > ground_alt + 140"/>
-      <set value="0" var="h_ctl_aileron_setpoint"/>
-      <set value="0" var="h_ctl_elevator_setpoint"/>
-    </block>
-    <block name="down_end" strip_button="DownEnd" strip_icon="downdownend.png">
-      <set value="0" var="h_ctl_aileron_setpoint"/>
-      <set value="0" var="h_ctl_elevator_setpoint"/>
-      <while cond="1.> stage_time"/>
-      <set value="FALSE" var="h_ctl_disabled"/>
-      <deroute block="stand_by"/>
+      <deroute block="circle_harbor"/>
     </block>
     <block name="Line 1-2">
       <call fun="nav_line_init()"/>
@@ -157,6 +140,23 @@
     <block name="flare">
       <go approaching_time="0" from="AF" hmode="route" throttle="0.0" vmode="throttle" wp="TD"/>
       <attitude roll="0.0" throttle="0.0" until="FALSE" vmode="throttle"/>
+    </block>
+    <block name="down" strip_button="Down" strip_icon="downdown.png" group="downdown">
+      <set value="LATERAL_MODE_ROLL" var="lateral_mode"/>
+      <set value="V_CTL_MODE_MANUAL" var="v_ctl_mode"/>
+      <set value="TRUE" var="h_ctl_disabled"/>
+      <set value="(-0.6*MAX_PPRZ)" var="h_ctl_aileron_setpoint"/>
+      <set value="(0.9*MAX_PPRZ)" var="h_ctl_elevator_setpoint"/>
+      <while cond="(GetPosAlt() > ground_alt + 140)"/>
+      <set value="0" var="h_ctl_aileron_setpoint"/>
+      <set value="0" var="h_ctl_elevator_setpoint"/>
+    </block>
+    <block name="down_end" strip_button="DownEnd" strip_icon="downdownend.png" group="downdown">
+      <set value="0" var="h_ctl_aileron_setpoint"/>
+      <set value="0" var="h_ctl_elevator_setpoint"/>
+      <while cond="1.> stage_time"/>
+      <set value="FALSE" var="h_ctl_disabled"/>
+      <deroute block="circle_ice"/>
     </block>
   </blocks>
 </flight_plan>
