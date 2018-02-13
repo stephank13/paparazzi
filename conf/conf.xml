@@ -20,8 +20,8 @@
    gui_color="yellow"
   />
   <aircraft
-   name="SUMO_02"
-   ac_id="22"
+   name="SUMO_04"
+   ac_id="24"
    airframe="airframes/campaign/sumogfi02.xml"
    radio="radios/t6ex.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
@@ -31,7 +31,7 @@
   />
   <aircraft
    name="SUMO_03"
-   ac_id="24"
+   ac_id="23"
    airframe="airframes/campaign/sumogfi03.xml"
    radio="radios/t7c.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
