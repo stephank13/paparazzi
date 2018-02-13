@@ -20,19 +20,19 @@
     <waypoint lat="65.0359710" lon="24.5556280" name="Flux2"/>
     <waypoint lat="65.036463" lon="24.55480" name="Flux1"/>
     <waypoint name="HOME" x="148.2" y="-141.0"/>
-    <waypoint alt="100.0" name="1" x="-309.3" y="-589.1"/>
-    <waypoint alt="100.0" name="2" x="-153.9" y="-41.4"/>
-    <waypoint name="S1" x="420.5" y="300.4"/>
+    <waypoint alt="100.0" name="1" x="-1017.7" y="-602.9"/>
+    <waypoint alt="100.0" name="2" x="387.1" y="854.4"/>
+    <waypoint name="S1" x="480.9" y="382.8"/>
     <waypoint name="S1a" x="540.5" y="300.4"/>
     <waypoint name="S1b" x="420.5" y="200.4"/>
     <waypoint name="S2" x="-27.3" y="620.9"/>
-    <waypoint name="MOB" x="321.5" y="-16.3"/>
-    <waypoint alt="100.0" name="C_ICE" x="203.8" y="-179.5"/>
-    <waypoint alt="100.0" name="C_HARBOR" x="39.5" y="262.5"/>
-    <waypoint alt="100.0" name="START" x="204.2" y="-367.6"/>
+    <waypoint name="MOB" x="209.5" y="149.7"/>
+    <waypoint alt="100.0" name="C_ICE" x="127.5" y="-111.5"/>
+    <waypoint alt="100.0" name="C_HARBOR" x="56.4" y="291.4"/>
+    <waypoint alt="100.0" name="START" x="222.7" y="-143.5"/>
     <waypoint name="_BASELEG" x="61.7" y="-337.5"/>
-    <waypoint alt="50.0" name="AF" x="307.1" y="-499.1"/>
-    <waypoint alt="0.0" name="TD" x="283.2" y="-338.2"/>
+    <waypoint alt="50.0" name="AF" x="6.3" y="-57.6"/>
+    <waypoint alt="0.0" name="TD" x="40.3" y="-135.5"/>
     <waypoint name="P1" x="65.2" y="323.7"/>
   </waypoints>
   <exceptions>
@@ -51,7 +51,7 @@
     <block name="circle_harbor" strip_button="c_harbor">
       <circle radius="nav_radius" wp="C_HARBOR"/>
     </block>
-    <block name="go_prof" strip_button="go profile low wind" strip_icon="up_profile.png">
+    <block group="prof_up" name="go_prof" strip_button="go profile 5deg" strip_icon="up_profile.png">
       <set value="100+ground_alt" var="waypoints[WP_P1].a"/>
       <circle radius="nav_radius" until="NavCircleCount() > 1" wp="P1"/>
       <deroute block="prof_down_start"/>
@@ -61,23 +61,30 @@
       <circle radius="nav_radius" until="stage_time > 0.1" wp="P1"/>
       <circle pitch="-5" radius="nav_radius" throttle="0.0" until="5 > (GetPosAlt() - WaypointAlt(WP_P1))" vmode="throttle" wp="P1"/>
       <circle radius="nav_radius" until="NavCircleCount() > 1" wp="P1"/>
-      <deroute block="prof_up"/>
+      <deroute block="prof_up_5deg"/>
     </block>
-    <block name="prof_up">
+    <block name="prof_up_5deg">
+      <set value="WaypointAlt(WP_pup)" var="waypoints[WP_P1].a"/>
+      <circle radius="nav_radius" until="stage_time > 0.1" wp="P1"/>
+      <circle pitch="5" radius="nav_radius" throttle="0.95" until="(GetPosAlt() - WaypointAlt(WP_P1)) > -5" vmode="throttle" wp="P1"/>
+      <circle radius="nav_radius" until="NavCircleCount() > 1" wp="P1"/>
+      <deroute block="prof_down_10deg"/>
+    </block>
+    <block group="prof_up" name="prof_up_7_5deg" strip_button="profile up 7.5deg" strip_icon="up_profile_l.png">
       <set value="WaypointAlt(WP_pup)" var="waypoints[WP_P1].a"/>
       <circle radius="nav_radius" until="stage_time > 0.1" wp="P1"/>
       <circle pitch="7.5" radius="nav_radius" throttle="0.95" until="(GetPosAlt() - WaypointAlt(WP_P1)) > -5" vmode="throttle" wp="P1"/>
       <circle radius="nav_radius" until="NavCircleCount() > 1" wp="P1"/>
-      <deroute block="prof_down_l"/>
+      <deroute block="prof_down_5deg"/>
     </block>
-    <block name="prof_down_l" strip_button="profile down low wind" strip_icon="down_profile_l.png" group="prof_down">
+    <block group="prof_down" name="prof_down_5deg" strip_button="profile down 5 deg" strip_icon="down_profile_l.png">
       <set value="WaypointAlt(WP_pdown)" var="waypoints[WP_P1].a"/>
       <circle radius="nav_radius" until="stage_time > 0.1" wp="P1"/>
       <circle pitch="-5" radius="nav_radius" throttle="0.0" until="5 > (GetPosAlt() - WaypointAlt(WP_P1))" vmode="throttle" wp="P1"/>
       <circle radius="nav_radius" until="NavCircleCount() > 1" wp="P1"/>
       <deroute block="circle_harbor"/>
     </block>
-    <block name="prof_down_h" strip_button="profile down high wind" strip_icon="down_profile_h.png" group="prof_down">
+    <block group="prof_down" name="prof_down_10deg" strip_button="profile down 10 deg" strip_icon="down_profile_h.png">
       <set value="WaypointAlt(WP_pdown)" var="waypoints[WP_P1].a"/>
       <circle radius="nav_radius" until="stage_time > 0.1" wp="P1"/>
       <circle pitch="-10" radius="nav_radius" throttle="0.0" until="5 > (GetPosAlt() - WaypointAlt(WP_P1))" vmode="throttle" wp="P1"/>
@@ -141,7 +148,7 @@
       <go approaching_time="0" from="AF" hmode="route" throttle="0.0" vmode="throttle" wp="TD"/>
       <attitude roll="0.0" throttle="0.0" until="FALSE" vmode="throttle"/>
     </block>
-    <block name="down" strip_button="Down" strip_icon="downdown.png" group="downdown">
+    <block group="downdown" name="down" strip_button="Down" strip_icon="downdown.png">
       <set value="LATERAL_MODE_ROLL" var="lateral_mode"/>
       <set value="V_CTL_MODE_MANUAL" var="v_ctl_mode"/>
       <set value="TRUE" var="h_ctl_disabled"/>
@@ -151,7 +158,7 @@
       <set value="0" var="h_ctl_aileron_setpoint"/>
       <set value="0" var="h_ctl_elevator_setpoint"/>
     </block>
-    <block name="down_end" strip_button="DownEnd" strip_icon="downdownend.png" group="downdown">
+    <block group="downdown" name="down_end" strip_button="DownEnd" strip_icon="downdownend.png">
       <set value="0" var="h_ctl_aileron_setpoint"/>
       <set value="0" var="h_ctl_elevator_setpoint"/>
       <while cond="1.> stage_time"/>
