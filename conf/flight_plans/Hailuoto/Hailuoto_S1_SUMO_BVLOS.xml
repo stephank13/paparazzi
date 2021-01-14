@@ -42,7 +42,7 @@
   </exceptions>
   <blocks>
     <block name="start">
-      <attitude pitch="20" roll="0" throttle="0.99" until="(estimator_flight_time > 3)" vmode="throttle"/>
+      <attitude pitch="20" roll="0" throttle="0.99" until="(estimator_flight_time > 5)" vmode="throttle"/>
       <go wp="START"/>
     </block>
     <block name="circle_ice" strip_button="c_ice">

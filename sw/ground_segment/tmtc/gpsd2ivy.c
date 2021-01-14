@@ -65,7 +65,7 @@
 #define MSG_NAME 	"FLIGHT_PARAM"
 #define MSG_ID		"GCS"
 
-#define TIMEOUT_PERIOD 200
+#define TIMEOUT_PERIOD 100
 
 struct gps_data_t *gpsdata;
 
@@ -78,7 +78,7 @@ static void update_gps(struct gps_data_t *gpsdata,
     double fix_speed = 0;
     double fix_altitude = 0;
     double fix_climb = 0;
-
+printf("gpsdata->fix.mode = %d\n", gpsdata->fix.mode);
     if ((isnan(gpsdata->fix.latitude) == 0) &&
         (isnan(gpsdata->fix.longitude) == 0) &&
         (isnan(gpsdata->fix.time) == 0) &&
@@ -117,22 +117,16 @@ static void update_gps(struct gps_data_t *gpsdata,
 
 static gboolean gps_periodic(gpointer data __attribute__ ((unused)))
 {
-        if (gps_waiting (gpsdata, 500)) {
-            if (gps_read (gpsdata) == -1) {
-		    perror("gps read error");
-		    //exit 2;
-		    //ret = 2;
-		    //running = false;
-	    } else {
+        if (gps_waiting (gpsdata, 100)) {
+            while (gps_read (gpsdata) != -1);
 		    update_gps(gpsdata, NULL, 0);
-	    }
 	}
+        return true;
 }
 
 int main(int argc, char *argv[])
 {
-    char *server = NULL, *port = DEFAULT_GPSD_PORT;
-    bool running = true;
+    char *port = DEFAULT_GPSD_PORT;
     int ret = 0;
     GMainLoop *ml =  g_main_loop_new(NULL, FALSE);
     
@@ -148,7 +142,7 @@ int main(int argc, char *argv[])
     gps_stream(gpsdata, WATCH_ENABLE, NULL);
     
     IvyInit ("GPSd2Ivy", "GPSd2Ivy READY", NULL, NULL, NULL, NULL);
-    IvyStart("224.255.255.255:2010");
+    IvyStart("127.255.255.255");
 
     g_timeout_add(TIMEOUT_PERIOD, gps_periodic, NULL);
 

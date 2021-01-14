@@ -13,19 +13,9 @@
    name="SUMO_01"
    ac_id="21"
    airframe="airframes/campaign/sumogfi01.xml"
-   radio="radios/t6ex.xml"
+   radio="radios/t7c.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
-   flight_plan="flight_plans/Hailuoto/Hailuoto_S1_SUMO_BVLOS.xml"
-   settings=" settings/fixedwing_basic.xml settings/control/ctl_basic.xml settings/estimation/ins_neutrals.xml"
-   gui_color="yellow"
-  />
-  <aircraft
-   name="SUMO_04"
-   ac_id="24"
-   airframe="airframes/campaign/sumogfi02.xml"
-   radio="radios/t6ex.xml"
-   telemetry="telemetry/default_fixedwing_imu.xml"
-   flight_plan="flight_plans/dummy.xml"
+   flight_plan="flight_plans/Nansen/rv_kronprinshaakon.xml"
    settings=" settings/fixedwing_basic.xml settings/control/ctl_basic.xml settings/estimation/ins_neutrals.xml"
    gui_color="yellow"
   />
@@ -35,8 +25,28 @@
    airframe="airframes/campaign/sumogfi03.xml"
    radio="radios/t7c.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
-   flight_plan="flight_plans/Hailuoto/Hailuoto_S1_SUMO_BVLOS.xml"
+   flight_plan="flight_plans/Nansen/rv_kronprinshaakon.xml"
    settings=" settings/fixedwing_basic.xml settings/control/ctl_basic.xml settings/estimation/ins_neutrals.xml"
    gui_color="yellow"
+  />
+  <aircraft
+   name="SUMO_04"
+   ac_id="24"
+   airframe="airframes/campaign/sumogfi04.xml"
+   radio="radios/t7c.xml"
+   telemetry="telemetry/default_fixedwing_imu.xml"
+   flight_plan="flight_plans/Nansen/Nansen_VLOS.xml"
+   settings=" settings/fixedwing_basic.xml settings/control/ctl_basic.xml settings/estimation/ins_neutrals.xml"
+   gui_color="yellow"
+  />
+  <aircraft
+   name="refGPS"
+   ac_id="1"
+   airframe="airframes/campaign/gps_in_a_box.xml"
+   radio="radios/t7c.xml"
+   telemetry="telemetry/gps_only.xml"
+   flight_plan="flight_plans/Nansen/refpoint.xml"
+   settings=" settings/dummy.xml"
+   gui_color="blue"
   />
 </conf>
